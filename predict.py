@@ -56,21 +56,21 @@ def main(args):
 
     # Load data
     #feats = torch.from_numpy(np.load(args.inp_feats)).type(torch.FloatTensor).to(device)
-    if test_config['mode'] == 'UAI':
+    if args.mode == 'UAI':
         test_data = Xvectors_test(args.inp_feats)
     else:
         test_data = FairVoice_embeddings_test(args.inp_feats)
     test_data.data, num_pad = pad_data(test_data.data, int(test_config['batch_size']))
 
     # Initialize and load model
-    if test_config['mode'] == 'UAI':
+    if args.mode == 'UAI':
         model = Xvector_UAI()
     else:
         model = Xvector_UnifAI()
     model.x_shape = (test_data.feat_dim,)
     checkpoint = torch.load(args.checkpoint_file, map_location=device)
     model.n_spk = checkpoint['state_dict']['pred_final.0.bias'].shape[0]
-    if test_config['mode'] != 'UAI':
+    if args.mode != 'UAI':
         model.n_bias = checkpoint['state_dict']['pred_bias_final.0.bias'].shape[0]
     model.init_model(model_config)
     model.load_state_dict(checkpoint['state_dict'])
@@ -79,17 +79,17 @@ def main(args):
     
     # Evaluate model on test input
     y_hat, e1, e2 = forward_pass(model, test_data)
-    if test_config['mode'] != 'UAI':
+    if args.mode != 'UAI':
         b_hat = forward_pass_bias(model, e1)
 
     # Save predictions and embeddings
     if num_pad!=0:
         save(out_dir, (e1[0:-num_pad,:], e2[0:-num_pad,:], y_hat[0:-num_pad]))
-        if test_config['mode'] != 'UAI':
+        if args.mode != 'UAI':
             save_bias(out_dir, b_hat[0:-num_pad])
     else:
         save(out_dir, (e1, e2, y_hat))
-        if test_config['mode'] != 'UAI':
+        if args.mode != 'UAI':
             save_bias(out_dir, b_hat)
 
     print("Done predicting for {}. Saved predictions in {}".format(args.data_name,out_dir))
@@ -114,7 +114,7 @@ def forward_pass(model, test_data):
     spk_pred = []
     for batch_idx, batch_data in enumerate(test_loader):
         batch_data = batch_data.to(device)
-        y_hat, x_hat, e1, e2 = model.forward_main(batch_data)
+        y_hat, x_hat, e1, e2 = model.forward_prim(batch_data)
         e1_all.append(e1.detach().cpu().numpy())
         e2_all.append(e2.detach().cpu().numpy())
         spk_pred.append(torch.argmax(y_hat, axis=1).detach().cpu().numpy())
@@ -125,7 +125,7 @@ def forward_pass_bias(model, e1):
     bias_pred = []
     for sample_idx, sample_data in enumerate(torch.from_numpy(e1)):
         sample_data = sample_data.to(device).unsqueeze(0)
-        b_hat = model.forward_dis_bias(sample_data)
+        b_hat = model.forward_bias(sample_data)
         bias_pred.append(torch.argmax(b_hat, axis=1).detach().cpu().numpy())
     return np.concatenate(bias_pred, axis=0)
 
@@ -134,6 +134,7 @@ if __name__=='__main__':
     parser.add_argument('--config_path', type=str, required=True)
     parser.add_argument('--exp_id', type=str, required=True)
     parser.add_argument('--epoch', type=str, required=True)
+    parser.add_argument('--mode', type=str, required=True)
     parser.add_argument('--data_name', type=str, required=True,
                         help="name with which embeddings should be saved. For example 'voices_enrol' ")
     parser.add_argument('--inp_feats', type=str, required=True, 
