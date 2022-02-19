@@ -11,7 +11,7 @@ import argparse
 
 fprs = [0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.2,0.3,0.4,0.5]
 groups = ['male_male','female_female']
-alphas = [0.0, 0.25, 0.5, 0.75, 1.0]
+omegas = [0.0, 0.25, 0.5, 0.75, 1.0]
 emb_map = {}
 xvec_map = {}
 
@@ -59,14 +59,14 @@ def compute_fpr_fnr(sim,labels_e1, thresh):
     fnr = fn/(fn+tp)
     return fpr, fnr
 
-def compute_fdr(fprs, fnrs, alpha=0.5):
+def compute_fdr(fprs, fnrs, omega=0.5):
     A = np.absolute(fprs[0]-fprs[1])
     B = np.absolute(fnrs[0]-fnrs[1])
     
-    return 1 - (alpha*A + (1-alpha)*B)
+    return 1 - (omega*A + (1-omega)*B)
 
 def compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_g0, sim_g1, labels_g0, labels_g1, 
-                  score_dir, emb_FLAG=True, alpha=0.5):
+                  score_dir, emb_FLAG=True, omega=0.5):
     # FDRs at various thersholds
     fdrs = []
     fnrs = []
@@ -75,20 +75,20 @@ def compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_g0, sim_g1, labels_g0, label
         fnr = 1 - tpr_ov[np.nanargmin(np.absolute((fpr_ov-fpr)))]
         fpr_g0, fnr_g0 = compute_fpr_fnr(sim_g0, labels_g0, thresh)
         fpr_g1, fnr_g1 = compute_fpr_fnr(sim_g1, labels_g1, thresh)
-        fdr = compute_fdr((fpr_g0, fpr_g1), (fnr_g0, fnr_g1), float(alpha))
+        fdr = compute_fdr((fpr_g0, fpr_g1), (fnr_g0, fnr_g1), float(omega))
         fdrs.append(np.round(fdr*100,2))
         fnrs.append(np.round(fnr*100,2))
     auFDR = auc([x*100 for x in fprs], fdrs)
     auFDR_10 =  auc([x*100 for x in fprs[0:10]], fdrs[0:10])
     df = pd.DataFrame(zip(fprs,fdrs, fnrs), columns=['fpr','fdr', 'fnr'])
     if emb_FLAG:
-        print("Alpha = {} auFDR auFDR_10".format(alpha))
+        print("Alpha = {} auFDR auFDR_10".format(omega))
         print("Embeddings: {} {}\n".format(auFDR, auFDR_10))
-        df.to_csv(os.path.join(score_dir, 'fdr_at_fpr_gender_alpha_{}.csv'.format(alpha)), index=None)
+        df.to_csv(os.path.join(score_dir, 'fdr_at_fpr_gender_omega_{}.csv'.format(omega)), index=None)
     else:
-        print("Alpha = {} auFDR auFDR_10".format(alpha))
+        print("Alpha = {} auFDR auFDR_10".format(omega))
         print("xvectors: {} {}\n".format(auFDR, auFDR_10))
-        df.to_csv(os.path.join(score_dir, 'fdr_at_fpr_gender_alpha_{}.csv'.format(alpha)), index=None)
+        df.to_csv(os.path.join(score_dir, 'fdr_at_fpr_gender_omega_{}.csv'.format(omega)), index=None)
     return auFDR, auFDR_10
 
 def main(args):
@@ -213,21 +213,21 @@ def main(args):
     # Compute area under FDR-FPR curve
     fpr_ov, tpr_ov, threshold_ov = roc_curve(labels_ov, sim_e1_ov)
     aus, au10s = [], []
-    for alpha in alphas:
-        au, au10 = compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_e1_g0, sim_e1_g1, labels_g0, labels_g1, scores_dir, emb_FLAG=True, alpha=alpha)
+    for omega in omegas:
+        au, au10 = compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_e1_g0, sim_e1_g1, labels_g0, labels_g1, scores_dir, emb_FLAG=True, omega=omega)
         aus.append(au)
         au10s.append(au10)
     
-    df = pd.DataFrame(zip(alphas,aus, au10s), columns=['alpha','au', 'au10'])
+    df = pd.DataFrame(zip(omegas,aus, au10s), columns=['omega','au', 'au10'])
     df.to_csv(os.path.join(score_dir, 'au_fdrs.csv'), index=None)
     if xvec_FLAG:
         fpr_ov, tpr_ov, threshold_ov = roc_curve(labels_ov, sim_xvec_ov)
         aus, aus10 = [],[]
-        for alpha in alphas:
-            compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_xvec_g0, sim_xvec_g1, labels_g0, labels_g1, scores_dir_xvec, emb_FLAG=False, alpha=alpha)
+        for omega in omegas:
+            compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_xvec_g0, sim_xvec_g1, labels_g0, labels_g1, scores_dir_xvec, emb_FLAG=False, omega=omega)
             aus.append(au)
             au10s.append(au10)
-        df = pd.DataFrame(zip(alphas,aus, au10s), columns=['alpha','au', 'au10'])
+        df = pd.DataFrame(zip(omegas,aus, au10s), columns=['omega','au', 'au10'])
         df.to_csv(os.path.join(score_dir_xvec, 'aufdrs.csv'), index=None)
     pdb.set_trace()
 if __name__=='__main__':
