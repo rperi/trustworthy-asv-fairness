@@ -84,12 +84,12 @@ def compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_g0, sim_g1, labels_g0, label
     if emb_FLAG:
         print("Alpha = {} auFDR auFDR_10".format(alpha))
         print("Embeddings: {} {}\n".format(auFDR, auFDR_10))
-        pdb.set_trace() 
         df.to_csv(os.path.join(score_dir, 'fdr_at_fpr_gender_alpha_{}.csv'.format(alpha)), index=None)
     else:
         print("Alpha = {} auFDR auFDR_10".format(alpha))
-        print("Embeddings: {} {}\n".format(auFDR, auFDR_10))
+        print("xvectors: {} {}\n".format(auFDR, auFDR_10))
         df.to_csv(os.path.join(score_dir, 'fdr_at_fpr_gender_alpha_{}.csv'.format(alpha)), index=None)
+    return auFDR, auFDR_10
 
 def main(args):
     xvec_FLAG = args.eval_xvector
@@ -173,10 +173,14 @@ def main(args):
         np.save(os.path.join(scores_dir, 'sim_e1_female_female'), sim_e1_f)
         np.save(os.path.join(scores_dir_xvec, 'labels_male_male'), labels_e1_m)
         np.save(os.path.join(scores_dir_xvec, 'labels_female_female'), labels_e1_f)
-        
+         
         print("EER_all EER_Male EER_Female")
         print("Embeddings: {} {} {}\n".format(np.round(eer_e1_ov*100,2), np.round(eer_e1_m*100,2), np.round(eer_e1_f*100,2)))
         
+        sim_e1_g0 = sim_e1_m
+        sim_e1_g1 = sim_e1_f
+        labels_g0 = labels_e1_m
+        labels_g1 = labels_e1_f
         print("Done scoring Gender-specific trials")
     else:
         sim_e1 = []
@@ -208,14 +212,24 @@ def main(args):
 
     # Compute area under FDR-FPR curve
     fpr_ov, tpr_ov, threshold_ov = roc_curve(labels_ov, sim_e1_ov)
+    aus, au10s = [], []
     for alpha in alphas:
-        compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_e1_g0, sim_e1_g1, labels_g0, labels_g1, scores_dir, emb_FLAG=True, alpha=alpha)
-
+        au, au10 = compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_e1_g0, sim_e1_g1, labels_g0, labels_g1, scores_dir, emb_FLAG=True, alpha=alpha)
+        aus.append(au)
+        au10s.append(au10)
+    
+    df = pd.DataFrame(zip(alphas,aus, au10s), columns=['alpha','au', 'au10'])
+    df.to_csv(os.path.join(score_dir, 'au_fdrs.csv'), index=None)
     if xvec_FLAG:
         fpr_ov, tpr_ov, threshold_ov = roc_curve(labels_ov, sim_xvec_ov)
+        aus, aus10 = [],[]
         for alpha in alphas:
             compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_xvec_g0, sim_xvec_g1, labels_g0, labels_g1, scores_dir_xvec, emb_FLAG=False, alpha=alpha)
-
+            aus.append(au)
+            au10s.append(au10)
+        df = pd.DataFrame(zip(alphas,aus, au10s), columns=['alpha','au', 'au10'])
+        df.to_csv(os.path.join(score_dir_xvec, 'aufdrs.csv'), index=None)
+    pdb.set_trace()
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--test_split', type=str, required=True, help='Whether dev or test')
