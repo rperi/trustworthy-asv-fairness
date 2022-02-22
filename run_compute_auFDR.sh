@@ -14,7 +14,8 @@ epoch=$3
     --epoch ${epoch} \
     --trials_root /proj/rperi/UAI/data/trials/CommonVoice/${test_split} \
     --data_root /proj/rperi/UAI/data/data_CommonVoice_${test_split} \
-    --scores_root /data/rperi/uai_pytorch/scores_CommonVoice_${test_split} \
-    --eval_xvector \
-    --xvector_type balanced
+    --pred_root //data/rperi/uai_pytorch/predictions_cv_${test_split} \
+    --scores_root /data/rperi/uai_pytorch/scores_CommonVoice_${test_split} #\
+    #--eval_xvector \
+    #--xvector_type balanced
           

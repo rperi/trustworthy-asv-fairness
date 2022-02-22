@@ -4,7 +4,7 @@ source activate uai_36
 source path.sh
 #echo "Activated env"
 
-feat_base=/proj/rperi/UAI/data/data_CommonVoice_$1/
+test_split=$1
 exp_id=$2
 epoch=$3
 mode=$4  #'UAI', 'NLDR' 'UAI-AT', 'UAI-MTL', 'AT', 'MTL'
@@ -19,6 +19,6 @@ mkdir -p ${pred_dir}
 	--epoch ${epoch} \
     --mode ${mode} \
 	--data_name  combined \
-	--inp_feats ${feat_base}/test_data.npy \
+	--inp_feats /proj/rperi/UAI/data/data_CommonVoice_${test_split}//test_data.npy \
 	--out_root ${pred_dir} \
 	--checkpoint_file ${model_dir}/Epoch_${epoch}.pt

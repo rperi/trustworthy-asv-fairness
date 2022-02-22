@@ -127,7 +127,7 @@ def main(args):
     # Load extracted embeddings and xvectors
     test_utts = np.load(os.path.join(args.data_root,'test_utts.npy'))
     
-    pred_dir_base = '/data/rperi/uai_pytorch/predictions_cv_{}/'.format(args.test_split)
+    pred_dir_base = args.pred_root
     pred_dir = os.path.join(pred_dir_base,'predictions_exp_{}_epoch_{}'.format(args.exp_id,args.epoch), 'combined')
     e1 = np.load(os.path.join(pred_dir,'emb1.npy'))
     for idx, utt in enumerate(test_utts):
@@ -217,9 +217,9 @@ def main(args):
         au, au10 = compute_auFDR(fpr_ov, tpr_ov, threshold_ov, sim_e1_g0, sim_e1_g1, labels_g0, labels_g1, scores_dir, emb_FLAG=True, omega=omega)
         aus.append(au)
         au10s.append(au10)
-    
     df = pd.DataFrame(zip(omegas,aus, au10s), columns=['omega','au', 'au10'])
-    df.to_csv(os.path.join(score_dir, 'au_fdrs.csv'), index=None)
+    df.to_csv(os.path.join(scores_dir, 'au_fdrs.csv'), index=None)
+
     if xvec_FLAG:
         fpr_ov, tpr_ov, threshold_ov = roc_curve(labels_ov, sim_xvec_ov)
         aus, aus10 = [],[]
@@ -228,7 +228,7 @@ def main(args):
             aus.append(au)
             au10s.append(au10)
         df = pd.DataFrame(zip(omegas,aus, au10s), columns=['omega','au', 'au10'])
-        df.to_csv(os.path.join(score_dir_xvec, 'aufdrs.csv'), index=None)
+        df.to_csv(os.path.join(scores_dir_xvec, 'aufdrs.csv'), index=None)
     pdb.set_trace()
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
@@ -241,6 +241,9 @@ if __name__=='__main__':
 
     parser.add_argument('--data_root', type=str, required=True,
                         help="Directory containing test_utts.npy") # /proj/rperi/UAI/data/data_CommonVoice_dev
+
+    parser.add_argument('--pred_root', type=str, required=True,
+                        help="Directory containing Extracted embeddings") # /data/rperi/uai_pytorch/predictions_cv_dev/
 
     parser.add_argument('--scores_root', type=str, required=True,
                         help="Directory to save ASV scores") # /data/rperi/uai_pytorch/scores_CommonVoice_dev
