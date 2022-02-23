@@ -28,8 +28,10 @@ bash run_compute_auFDR.sh <data_dir> dev UAI-MTL
 ## Methods
 ![Journal UAI_model_new](https://user-images.githubusercontent.com/23619674/155252585-42939d23-8486-4fe2-8f14-ae26176dacf8.png)
 
+### UAI
 ![Eq1-3](https://user-images.githubusercontent.com/23619674/155253114-e298e144-9c25-491a-a34b-5adeec0296e5.png)
 
+### UAI-AT AND UAI-MTL
 ![Equation_4](https://user-images.githubusercontent.com/23619674/155253115-93254052-ba5c-4819-acc9-e5f6e35cd6f0.png)
 
 ![modules](https://user-images.githubusercontent.com/23619674/155252784-48a106da-0681-4976-9e8b-a826c0e88474.png)
