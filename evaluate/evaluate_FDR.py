@@ -116,19 +116,15 @@ def main(args):
 
     # Create directories to save ASV scores
     scores_dir_base = args.scores_root
-    if args.xvector_type=='imbalanced':
-        scores_dir_xvec = os.path.join(scores_dir_base,'scores_xvec_imbalanced')
-    else:
-        scores_dir_xvec = os.path.join(scores_dir_base,'scores_xvec')
-    scores_dir = os.path.join(scores_dir_base,'scores_exp_{}_epoch_{}'.format(args.exp_id, args.epoch))
+    scores_dir_xvec = os.path.join(scores_dir_base,'baseline')
+    scores_dir = os.path.join(scores_dir_base,'{}'.format(args.mode))
     os.makedirs(scores_dir_xvec, exist_ok=True)
     os.makedirs(scores_dir, exist_ok=True)
 
     # Load extracted embeddings and xvectors
     test_utts = np.load(os.path.join(args.data_root,'test_utts.npy'))
     
-    pred_dir_base = args.pred_root
-    pred_dir = os.path.join(pred_dir_base,'predictions_exp_{}_epoch_{}'.format(args.exp_id,args.epoch), 'combined')
+    pred_dir = args.pred_root
     e1 = np.load(os.path.join(pred_dir,'emb1.npy'))
     for idx, utt in enumerate(test_utts):
         emb_map[utt] = e1[idx,:]
@@ -233,9 +229,7 @@ def main(args):
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--test_split', type=str, required=True, help='Whether dev or test')
-    parser.add_argument('--exp_id', type=str, required=True)
-    parser.add_argument('--epoch', type=str, required=True)
-
+    parser.add_argument('--mode', type=str, required=True)
     parser.add_argument('--trials_root', type=str, required=True,
                         help="Directory containing Test-Combined.csv") # /proj/rperi/UAI/data/trials/CommonVoice/dev
 
@@ -248,9 +242,6 @@ if __name__=='__main__':
     parser.add_argument('--scores_root', type=str, required=True,
                         help="Directory to save ASV scores") # /data/rperi/uai_pytorch/scores_CommonVoice_dev
     parser.add_argument('--eval_xvector', default=False, action='store_true')
-    parser.add_argument('--xvector_type', type=str, default='balanced',
-                        help='Load either xvectors trained on balanced or imbalanced data. Corresponds to the scenarios in https://arxiv.org/abs/2104.14067')
-
     args = parser.parse_args()
     main(args)
 
