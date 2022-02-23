@@ -196,6 +196,8 @@ def main(args):
             sim_xvec_f, labels_xvec_f, eer_xvec_f, fpr_xvec_f, fnr_xvec_f = compute_scores(df_f_f, eer_threshold_xvec_ov, emb_FLAG=False)
             np.save(os.path.join(scores_dir_xvec, 'sim_xvec_male_male'), sim_xvec_m)
             np.save(os.path.join(scores_dir_xvec, 'sim_xvec_female_female'), sim_xvec_f)
+            sim_xvec_g0 = sim_xvec_m
+            sim_xvec_g1 = sim_xvec_f
             print("x-vector: {} {} {}\n".format(np.round(eer_xvec_ov*100,2), np.round(eer_xvec_m*100,2),np.round(eer_xvec_f*100,2)))
             print("Done scoring Gender-specific trials for x-vectors")
         else:

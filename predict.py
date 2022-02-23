@@ -40,10 +40,7 @@ def main(args):
         print("Model checkpoint file provided doesn't exist in {}. Exiting".format(args.checkpoint_file)) 
         sys.exit(1)
     device = get_device()  # Function defined in utils/basic_utils.py
-    exp_id = args.exp_id
 
-    out_dir = os.path.join(args.out_root,'predictions_exp_{}_epoch_{}/'.format(exp_id, args.epoch), args.data_name)
-    create_dirs([out_dir])
     
     # Load configuration file
     config = configparser.ConfigParser()
@@ -83,6 +80,7 @@ def main(args):
         b_hat = forward_pass_bias(model, e1)
 
     # Save predictions and embeddings
+    out_dir = args.out_dir
     if num_pad!=0:
         save(out_dir, (e1[0:-num_pad,:], e2[0:-num_pad,:], y_hat[0:-num_pad]))
         if args.mode != 'UAI':
@@ -92,7 +90,7 @@ def main(args):
         if args.mode != 'UAI':
             save_bias(out_dir, b_hat)
 
-    print("Done predicting for {}. Saved predictions in {}".format(args.data_name,out_dir))
+    print("Done predicting. Saved predictions in {}".format(out_dir))
 
 
 def pad_data(feats, batch_size):
@@ -132,14 +130,10 @@ def forward_pass_bias(model, e1):
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--config_path', type=str, required=True)
-    parser.add_argument('--exp_id', type=str, required=True)
-    parser.add_argument('--epoch', type=str, required=True)
     parser.add_argument('--mode', type=str, required=True)
-    parser.add_argument('--data_name', type=str, required=True,
-                        help="name with which embeddings should be saved. For example 'voices_enrol' ")
     parser.add_argument('--inp_feats', type=str, required=True, 
                         help='Input features (x-vectors) as numpy array to do prediction on')
-    parser.add_argument('--out_root', type=str, required=True,
+    parser.add_argument('--out_dir', type=str, required=True,
                         help='Directory where outut predictions and embeddings will be saved')
     parser.add_argument('--checkpoint_file', type=str, required=True)
 
