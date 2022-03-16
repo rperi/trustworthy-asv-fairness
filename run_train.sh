@@ -1,8 +1,14 @@
 #!/bin/bash
 
 #source activate uai_36
-#echo "Activated env"
-exp=$1
+source path.sh
 
-python train.py --config_path configs/exp_${1}.cfg --data_root /proj/rperi/UAI/data/data_FairVoice_train2/ --weights_root /proj/rperi/UAI/saved_models/ --logs_root /proj/rperi/UAI/logs/
+data_dir=$1 #<data_dir>
+mode=$2 #'UAI', 'NLDR' 'UAI-AT', 'UAI-MTL', 'AT', 'MTL'
+
+python train.py \
+        --config_path configs/exp_${mode}.cfg \
+        --data_root ${data_dir}/embed-train_val/ \
+        --weights_root ${data_dir}/saved_models/ \
+        --logs_root ${data_dir}/logs/
 

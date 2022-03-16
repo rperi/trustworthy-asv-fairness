@@ -1,11 +1,11 @@
 #!/bin/bash
 
-source activate uai_36
+#source activate uai_36
 source path.sh
 #echo "Activated env"
 
-data_dir=$1
-test_split=$2
+data_dir=$1 # <data_dir>
+test_split=$2 #'dev', 'test'
 mode=$3  #'UAI', 'NLDR' 'UAI-AT', 'UAI-MTL', 'AT', 'MTL'
 
 model_dir=${data_dir}/saved_models/
