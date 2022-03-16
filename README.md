@@ -9,7 +9,7 @@ TO-DO
 1. Pre-trained models for each of the methods described in paper: https://drive.google.com/drive/folders/1m_mv_klf3ZFAREuv0gct1SPV8KftxyTm?usp=sharing
 2. Baseline embeddings (from FairVoice) for training and evaluation: https://drive.google.com/drive/folders/1Yb6GEultj4ig1kVb3h19Z7Mzz_UHU6Po?usp=sharing
 3. Transformed embeddings (extracted using above pre-trained models) on eval-dev and eval-test datasets: https://drive.google.com/drive/folders/1HIB0Z7fEMFjOBXg_DrcXAZqUvuoDTyJl?usp=sharing
-4. Verification trials based on Mozilla CommonVoice audio: https://drive.google.com/drive/folders/1DJaGfuG6DaAFaQyICfE22rTR9aIhuif4?usp=sharing
+4. Verification trials based on Mozilla CommonVoice (MCV) an Voxceleb1-H audio: https://drive.google.com/drive/folders/1DJaGfuG6DaAFaQyICfE22rTR9aIhuif4?usp=sharing
 
 ## Steps to run evaluations (on the eval-dev and eval-test datasets shown in paper)
 1. Download the models, embeddings and trials from the above shared links, and place them in directory of choice (<data_dir>)
