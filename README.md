@@ -35,6 +35,26 @@ For example, to run evaluations for "eval-dev" set and for "UAI-MTL" method
 bash run_compute_auFDR.sh <data_dir> eval-dev UAI-MTL
 ```
 
+## Steps to transform the baseline embeddings (Pre-transformed embeddings are already provided in the above links)
+1. Download the baseline embeddings (FairVoice) and saved models from the above shared links, and place them in local directory of choice (<data_dir>)
+2. Transform the baseline embeddings
+
+```
+bash run_transform.sh <data_dir> <test_split> <method>
+```
+
+<data_dir> is the chosen directory to save downloaded embeddings and trials files
+
+<test_split> is one of "eval-dev", "eval-test" or "voxceleb1_h".
+
+<method> is one of "AT", "MTL", "NLDR", "UAI", "UAI-AT" or "UAI-MTL"
+
+For example, to transform embeddings for "eval-dev" set and for "UAI-MTL" method
+
+```
+bash run_transform.sh <data_dir> eval-dev UAI-MTL
+```
+ 
 ## Methods
 ![Journal UAI_model_new](https://user-images.githubusercontent.com/23619674/155252585-42939d23-8486-4fe2-8f14-ae26176dacf8.png)
 
