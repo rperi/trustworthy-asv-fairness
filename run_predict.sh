@@ -5,7 +5,7 @@ source path.sh
 #echo "Activated env"
 
 data_dir=$1 # <data_dir>
-test_split=$2 #'dev', 'test'
+test_split=$2 #'eval-dev', 'eval-test' or 'voxceleb1_h'
 mode=$3  #'UAI', 'NLDR' 'UAI-AT', 'UAI-MTL', 'AT', 'MTL'
 
 model_dir=${data_dir}/saved_models/
@@ -16,6 +16,6 @@ mkdir -p ${pred_dir}
   python predict.py \
 	--config_path configs/exp_test.cfg \
     --mode ${mode} \
-	--inp_feats ${data_dir}/data/eval-${test_split}/test_data.npy \
+	--inp_feats ${data_dir}/data/${test_split}/test_data.npy \
 	--out_dir ${pred_dir} \
 	--checkpoint_file ${model_dir}/${mode}.pt
