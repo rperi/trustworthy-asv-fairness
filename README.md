@@ -1,28 +1,38 @@
 # trustworthy-asv-fairness
-Improving fairness of speaker representations using adversarial and collaborative learning methods
-Paper: TO-BE-UPDATED
+Improving fairness of speaker representations using adversarial and multi-task learning methods
 
-## Brief description
-TO-DO
+Paper (Submitted to Elsevier Computer Speech and Language): To train or not to train adversarially: A study of bias mitigation strategies for speaker recognition https://arxiv.org/pdf/2203.09122.pdf
+
+## Highlights
+* Systematic evaluation of biases with respect to gender in speaker verification systems at multiple operating points.
+* Amount of fairness achieved through training data balancing depends on operating region of speaker verification system.
+* Adversarial and multi-task training based embedding transformation techniques improve the fairness of existing speaker verification systems.
+* Utility is an important consideration in choosing appropriate bias mitigation strategies. Multi-task technique improves fairness and retains utility, adversarial technique improves fairness at the cost of reduced utility.
 
 ## Shared data, models
 1. Pre-trained models for each of the methods described in paper: https://drive.google.com/drive/folders/1m_mv_klf3ZFAREuv0gct1SPV8KftxyTm?usp=sharing
-2. Baseline embeddings (from FairVoice) for training and evaluation: https://drive.google.com/drive/folders/1Yb6GEultj4ig1kVb3h19Z7Mzz_UHU6Po?usp=sharing
+2. Baseline embeddings (from FairVoice [[2]](#2)) for training and evaluation: https://drive.google.com/drive/folders/1Yb6GEultj4ig1kVb3h19Z7Mzz_UHU6Po?usp=sharing
 3. Transformed embeddings (extracted using above pre-trained models) on eval-dev and eval-test datasets: https://drive.google.com/drive/folders/1HIB0Z7fEMFjOBXg_DrcXAZqUvuoDTyJl?usp=sharing
-4. Verification trials based on Mozilla CommonVoice (MCV) an Voxceleb1-H audio: https://drive.google.com/drive/folders/1DJaGfuG6DaAFaQyICfE22rTR9aIhuif4?usp=sharing
+4. Verification trials based on Mozilla CommonVoice (MCV) and Voxceleb1-H audio: https://drive.google.com/drive/folders/1DJaGfuG6DaAFaQyICfE22rTR9aIhuif4?usp=sharing
 
-## Steps to run evaluations (on the eval-dev and eval-test datasets shown in paper)
-1. Download the models, embeddings and trials from the above shared links, and place them in directory of choice (<data_dir>)
-2. Evaluate models with fairness metrics
+## Steps to run fairness evaluations
+1. Download the transformed embeddings and trials from the above shared links, and place them in local directory of choice (<data_dir>)
+2. Evaluate models with fairness metrics (Fairness Discrepancy Rate: [[1]](#1))
 
 ```
 bash run_compute_auFDR.sh <data_dir> <test_split> <method>
 ```
 
-<test_split> can be one of "dev" or "test". For example, to run evaluations for "eval-dev" set and for "UAI-MTL" method
+<data_dir> is the chosen directory to save downloaded embeddings and trials files
+
+<test_split> is one of "eval-dev", "eval-test" or "voxceleb1_h".
+
+<method> is one of "AT", "MTL", "NLDR", "UAI", "UAI-AT" or "UAI-MTL"
+
+For example, to run evaluations for "eval-dev" set and for "UAI-MTL" method
 
 ```
-bash run_compute_auFDR.sh <data_dir> dev UAI-MTL
+bash run_compute_auFDR.sh <data_dir> eval-dev UAI-MTL
 ```
 
 ## Methods
@@ -37,5 +47,13 @@ bash run_compute_auFDR.sh <data_dir> dev UAI-MTL
 ![modules](https://user-images.githubusercontent.com/23619674/155252784-48a106da-0681-4976-9e8b-a826c0e88474.png)
 
 ## Results
+
+## References
+<a id="1">[1]</a> 
+T. de Freitas Pereira, S. Marcel, Fairness in biometrics: a figure of merit to assess biometric verification systems
+
+<a id="2">[2]</a>
+G. Fenu, H. Lafhouli, M. Marras, Exploring algorithmic fairness in deep speaker verification, in: International Conference
+on Computational Science and Its Applications, Springer, 2020, pp. 77–93.
 
 
