@@ -13,9 +13,9 @@ pred_dir=${data_dir}/transformed_embeddings/eval-${test_split}/${mode}
 mkdir -p ${pred_dir}
 
   # Peroform model inference 
-  python predict.py \
+  python transform.py \
 	--config_path configs/exp_test.cfg \
-    --mode ${mode} \
+    	--mode ${mode} \
 	--inp_feats ${data_dir}/data/${test_split}/test_data.npy \
 	--out_dir ${pred_dir} \
 	--checkpoint_file ${model_dir}/${mode}.pt
