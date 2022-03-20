@@ -232,16 +232,16 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--mode', type=str, required=True)
     parser.add_argument('--trials_root', type=str, required=True,
-                        help="Directory containing Test-Combined.csv") # /proj/rperi/UAI/data/trials/CommonVoice/dev
+                        help="Directory containing Test-Combined.csv")
 
     parser.add_argument('--data_root', type=str, required=True,
-                        help="Directory containing test_utts.npy") # /proj/rperi/UAI/data/data_CommonVoice_dev
+                        help="Directory containing test_utts.npy")
 
     parser.add_argument('--pred_root', type=str, required=True,
-                        help="Directory containing Extracted embeddings") # /data/rperi/uai_pytorch/predictions_cv_dev/
+                        help="Directory containing Extracted embeddings")
 
     parser.add_argument('--scores_root', type=str, required=True,
-                        help="Directory to save ASV scores") # /data/rperi/uai_pytorch/scores_CommonVoice_dev
+                        help="Directory to save ASV scores")
     parser.add_argument('--eval_xvector', default=False, action='store_true')
     args = parser.parse_args()
     main(args)
