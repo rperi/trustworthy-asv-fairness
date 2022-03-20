@@ -230,7 +230,6 @@ def main(args):
     pdb.set_trace()
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--test_split', type=str, required=True, help='Whether dev or test')
     parser.add_argument('--mode', type=str, required=True)
     parser.add_argument('--trials_root', type=str, required=True,
                         help="Directory containing Test-Combined.csv") # /proj/rperi/UAI/data/trials/CommonVoice/dev
