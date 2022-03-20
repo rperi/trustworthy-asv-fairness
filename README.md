@@ -15,6 +15,12 @@ Paper (Submitted to Elsevier Computer Speech and Language): To train or not to t
 3. Transformed embeddings (extracted using above pre-trained models) on eval-dev and eval-test datasets: https://drive.google.com/drive/folders/1HIB0Z7fEMFjOBXg_DrcXAZqUvuoDTyJl?usp=sharing
 4. Verification trials based on Mozilla CommonVoice (MCV) and Voxceleb1-H audio: https://drive.google.com/drive/folders/1DJaGfuG6DaAFaQyICfE22rTR9aIhuif4?usp=sharing
 
+## Conda environment
+Will create a conda environment named uai_36 with required packages. Needed for subsequent steps
+```
+conda env create -f conda_env.yml
+```
+
 ## Steps to run fairness evaluations
 1. Download the transformed embeddings and trials from the above shared links, and place them in local directory of choice (<data_dir>)
 2. Evaluate models with fairness metrics (Fairness Discrepancy Rate: [[1]](#1))
@@ -27,7 +33,7 @@ bash run_compute_auFDR.sh <data_dir> <test_split> <method>
 
 <test_split> is one of "eval-dev", "eval-test" or "voxceleb1_h".
 
-<method> is one of "AT", "MTL", "NLDR", "UAI", "UAI-AT" or "UAI-MTL"
+\<method\> is one of "AT", "MTL", "NLDR", "UAI", "UAI-AT" or "UAI-MTL"
 
 For example, to run evaluations for "eval-dev" set and for "UAI-MTL" method
 
@@ -47,7 +53,7 @@ bash run_transform.sh <data_dir> <test_split> <method>
 
 <test_split> is one of "eval-dev", "eval-test" or "voxceleb1_h".
 
-<method> is one of "AT", "MTL", "NLDR", "UAI", "UAI-AT" or "UAI-MTL"
+\<method\> is one of "AT", "MTL", "NLDR", "UAI", "UAI-AT" or "UAI-MTL"
 
 For example, to transform embeddings for "eval-dev" set and for "UAI-MTL" method
 
@@ -67,6 +73,9 @@ bash run_transform.sh <data_dir> eval-dev UAI-MTL
 ![modules](https://user-images.githubusercontent.com/23619674/155252784-48a106da-0681-4976-9e8b-a826c0e88474.png)
 
 ## Results
+![KDE_IMPOSTOR](https://user-images.githubusercontent.com/23619674/159154211-1ba1219b-1b07-492e-9eba-72ecb9b3522c.png)
+![KDE_target](https://user-images.githubusercontent.com/23619674/159154212-859122e6-9964-4196-ae22-823ce4ad858f.png)
+
 
 ## References
 <a id="1">[1]</a> 
