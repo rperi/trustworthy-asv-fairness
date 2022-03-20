@@ -12,7 +12,7 @@ Paper (Submitted to Elsevier Computer Speech and Language): To train or not to t
 ## Shared data, models
 1. Pre-trained models for each of the methods described in paper: https://drive.google.com/drive/folders/1m_mv_klf3ZFAREuv0gct1SPV8KftxyTm?usp=sharing
 2. Baseline embeddings (from FairVoice [[2]](#2)) for training and evaluation: https://drive.google.com/drive/folders/1Yb6GEultj4ig1kVb3h19Z7Mzz_UHU6Po?usp=sharing
-3. Transformed embeddings (extracted using above pre-trained models) on eval-dev and eval-test datasets: https://drive.google.com/drive/folders/1HIB0Z7fEMFjOBXg_DrcXAZqUvuoDTyJl?usp=sharing
+3. Transformed embeddings (extracted using above pre-trained models) on eval-dev, eval-test and voxceleb1_h datasets: https://drive.google.com/drive/folders/1HIB0Z7fEMFjOBXg_DrcXAZqUvuoDTyJl?usp=sharing
 4. Verification trials based on Mozilla CommonVoice (MCV) and Voxceleb1-H audio: https://drive.google.com/drive/folders/1DJaGfuG6DaAFaQyICfE22rTR9aIhuif4?usp=sharing
 
 ## Conda environment
