@@ -2,6 +2,7 @@
 Improving fairness of speaker representations using adversarial and multi-task learning methods
 
 Paper (Submitted to Elsevier Computer Speech and Language): To train or not to train adversarially: A study of bias mitigation strategies for speaker recognition https://arxiv.org/pdf/2203.09122.pdf
+Adversarial training ideas were adopted and modified from Jaiswal, A., Wu, Y., AbdAlmageed, W., & Natarajan, P. (2019). Unified adversarial invariance. arXiv preprint arXiv:1905.03629.
 
 ## Highlights
 * Systematic evaluation of biases with respect to gender in speaker verification systems at multiple operating points.
